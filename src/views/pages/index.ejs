@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include(`${partials}/head`); -%>
-<body>
-<pre class="container">
+  <%- include(`${partials}/head`); -%>
+  <body>
+    <pre class="container">
 <div>
 <a href="<%= PP %>/">Home</a> - <a href="<%= PP %>/bsc/">BSC</a> - <a href="<%= PP %>/heco/">HECO</a> - <a href="<%= PP %>/matic/">MATIC</a> - <a href="<%= PP %>/xdai/">xDAI</a> - <a href="<%= PP %>/avax/">AVAX</a> - <a href="<%= PP %>/seigniorage/">Seigniorage</a>
 </div>
@@ -10,44 +10,44 @@
 <a href="https://www.youtube.com/watch?v=D8RZhK1zcs0" target="_blank">Youtube tutorial!</a> by the excellent <a href="https://twitter.com/gabrielhaines" target="_blank">Gabriel Haines</a>
 </div>
 
----Pool Provider---     --------LP--------          --Reward Tokens--  --INFO--
-     Yam                 <a href="yam/"               >YAM-ETH SLP</a>                 YAM                https://yam.finance/farm
-     yAxis               <a href="yaxis/"             >Various</a>                     yAxis              https://yaxis.io/farms
-     Pickle              <a href="pickle/"            >Various</a>                     Pickle             https://pickle.finance/farms
-     HolyHeld            <a href="holy/"              >Various</a>                     HOLY               https://app.holyheld.com/
-     Stabilize           <a href="stabilize/"         >Various</a>                     STBZ               https://stabilize.finance
-     SwapShip            <a href="swapship/"          >Various</a>                     SWSH,RTC           https://www.swapship.finance/staking
-     Alpha DEX           <a href="alphadex/"          >Various</a>                     DEX                https://kitten.finance
-     Kitten              <a href="kitten/"            >Various</a>                     kBASEv0            https://kitten.finance
-     Ichi                <a href="ichi/"              >Various</a>                     Ichi               https://ichi.farm
-     TrueFi              <a href="truefi/"            >Various</a>                     TRU                https://app.truefi.io/farm
-     Benchmark           <a href="benchmark/"         >Various</a>                     MARK               https://launchpad.benchmarkprotocol.finance/pools
-     Basis               <a href="basis/"             >Various</a>                     BAS,BAC            https://basis.cash
-     Badger              <a href="badger/"            >Various</a>                     BADGER             https://app.badger.finance
-     PowerIndex          <a href="powerindex/"        >Various</a>                     CVP                https://powerindex.io
-     UpDown              <a href="updown/"            >UPDOWN / UPDOWN-ETH</a>         wETH               https://updown.finance
-     Build Finance       <a href="build/"             >BUILD-ETH</a>                   bCRED              https://build.finance
-     Empty Set Dollar    <a href="esd/"               >Various</a>                     ESD                https://app.emptyset.finance/
-     Dynamic Set Dollar  <a href="dsd/"               >Various</a>                     DSD                https://dsd.finance/app
-     Basis Dollar        <a href="bsd/"               >Various</a>                     BSD,BSDS           https://basisdollar.fi/
-     Frax Finance        <a href="frax/"              >Various</a>                     FXS                https://app.frax.finance/
-     Debase              <a href="debase/"            >Various</a>                     DEBASE,DEGOV       https://debaseonomics.io
-     1inch               <a href="1inch/"             >Various</a>                     1INCH              https://1inch.exchange/#/dao/farming
-     MITH Cash           <a href="mithcash/"          >Various</a>                     MIS,MIC            https://mith.cash
-     One Cash            <a href="onecash/"           >Various</a>                     ONC,ONS            https://onecash.finance
-     Basis Gold          <a href="bsg/"               >Various</a>                     BSG,BSGS           https://basis.gold
-     Harvest Finance     <a href="harvest-finance/"   >Various</a>                     FARM               https://harvest.finance
-     Typhoon Cash        <a href="typhoon/"           >Various</a>                     PHOON              https://typhoon.cash
-     Armor               <a href="armor/"             >Various</a>                     ARMOR              https://armor.fi
-     Launchpool          <a href="lpool/"             >Various</a>                     LPOOL              https://staking.launchpool.xyz/
-     Sushiswap           <a href="sushi/"             >Various</a>                     SUSHI              https://app.sushi.com/farms
-     xSigma              <a href="xsigma/"            >Various</a>                     SIG                https://app.xsigma.fi/stake
-     Alchemix            <a href="alcx/"              >Various</a>                     ALCX               https://app.alchemix.fi/farms
-     DFX                 <a href="dfx/"               >Various</a>                     DFX                https://v0.dfx.finance/
-     xToken              <a href="xtoken/"            >Various</a>                     XTK                https://xtoken.cafe/app/dashboard
-     Ruler Protocol      <a href="ruler/"             >Various</a>                     RULER              https://app.rulerprotocol.com/app/farms
-     Unslashed           <a href="usf/"               >Various</a>                     USF                https://app.unslashed.finance/
-     Inverse             <a href="inverse/"           >Various</a>                     INV                https://inverse.finance/stake
+---Pool Provider---     --------LP--------          --Reward Tokens--    --Price--              --INFO--
+     Yam                 <a href="yam/"               >YAM-ETH SLP</a>                 YAM                <span id="price-of-yam"></span>   https://yam.finance/farm
+     yAxis               <a href="yaxis/"             >Various</a>                     yAxis              <span id="price-of-yaxis"></span>   https://yaxis.io/farms
+     Pickle              <a href="pickle/"            >Various</a>                     Pickle             <span id="price-of-pickle-finance"></span>   https://pickle.finance/farms
+     HolyHeld            <a href="holy/"              >Various</a>                     HOLY               <span id="price-of-holyheld"></span>   https://app.holyheld.com/
+     Stabilize           <a href="stabilize/"         >Various</a>                     STBZ               <span id="price-of-stabilize"></span>   https://stabilize.finance
+     SwapShip            <a href="swapship/"          >Various</a>                     SWSH,RTC           <span id="price-of-swapship"></span>   https://www.swapship.finance/staking
+     Alpha DEX           <a href="alphadex/"          >Various</a>                     DEX                <span id="price-of-alphadex"></span>   https://kitten.finance
+     Kitten              <a href="kitten/"            >Various</a>                     kBASEv0            <span id="price-of-kittenfinance"></span>   https://kitten.finance
+     Ichi                <a href="ichi/"              >Various</a>                     Ichi               <span id="cmc-price-of-ichi"></span>   https://ichi.farm
+     TrueFi              <a href="truefi/"            >Various</a>                     TRU                <span id="price-of-truefi"></span>   https://app.truefi.io/farm
+     Benchmark           <a href="benchmark/"         >Various</a>                     MARK               <span id="price-of-benchmark-protocol"></span>   https://launchpad.benchmarkprotocol.finance/pools
+     Basis               <a href="basis/"             >Various</a>                     BAS,BAC            <span id="price-of-basis-cash"></span>   https://basis.cash
+     Badger              <a href="badger/"            >Various</a>                     BADGER             <span id="price-of-badger-dao"></span>   https://app.badger.finance
+     PowerIndex          <a href="powerindex/"        >Various</a>                     CVP                <span id="price-of-xxx"></span>   https://powerindex.io
+     UpDown              <a href="updown/"            >UPDOWN / UPDOWN-ETH</a>         wETH               <span id="price-of-xxx"></span>   https://updown.finance
+     Build Finance       <a href="build/"             >BUILD-ETH</a>                   bCRED              <span id="price-of-build-finance"></span>   https://build.finance
+     Empty Set Dollar    <a href="esd/"               >Various</a>                     ESD                <span id="price-of-empty-set-dollar"></span>   https://app.emptyset.finance/
+     Dynamic Set Dollar  <a href="dsd/"               >Various</a>                     DSD                <span id="price-of-dynamic-set-dollar"></span>   https://dsd.finance/app
+     Basis Dollar        <a href="bsd/"               >Various</a>                     BSD,BSDS           <span id="price-of-basis-dollar"></span>   https://basisdollar.fi/
+     Frax Finance        <a href="frax/"              >Various</a>                     FXS                <span id="price-of-frax-share"></span>   https://app.frax.finance/
+     Debase              <a href="debase/"            >Various</a>                     DEBASE,DEGOV       <span id="price-of-debase"></span>   https://debaseonomics.io
+     1inch               <a href="1inch/"             >Various</a>                     1INCH              <span id="price-of-1inch"></span>   https://1inch.exchange/#/dao/farming
+     MITH Cash           <a href="mithcash/"          >Various</a>                     MIS,MIC            <span id="price-of-mith-cash"></span>   https://mith.cash
+     One Cash            <a href="onecash/"           >Various</a>                     ONC,ONS            <span id="price-of-one-cash"></span>   https://onecash.finance
+     Basis Gold          <a href="bsg/"               >Various</a>                     BSG,BSGS           <span id="price-of-basis-gold"></span>   https://basis.gold
+     Harvest Finance     <a href="harvest-finance/"   >Various</a>                     FARM               <span id="price-of-harvest-finance"></span>   https://harvest.finance
+     Typhoon Cash        <a href="typhoon/"           >Various</a>                     PHOON              <span id="price-of-typhoon-cash"></span>   https://typhoon.cash
+     Armor               <a href="armor/"             >Various</a>                     ARMOR              <span id="price-of-armor"></span>   https://armor.fi
+     Launchpool          <a href="lpool/"             >Various</a>                     LPOOL              <span id="price-of-launchpool"></span>   https://staking.launchpool.xyz/
+     Sushiswap           <a href="sushi/"             >Various</a>                     SUSHI              <span id="price-of-sushi"></span>   https://app.sushi.com/farms
+     xSigma              <a href="xsigma/"            >Various</a>                     SIG                <span id="price-of-xsigma"></span>   https://app.xsigma.fi/stake
+     Alchemix            <a href="alcx/"              >Various</a>                     ALCX               <span id="price-of-alchemix"></span>   https://app.alchemix.fi/farms
+     DFX                 <a href="dfx/"               >Various</a>                     DFX                <span id="price-of-dfx-finance"></span>   https://v0.dfx.finance/
+     xToken              <a href="xtoken/"            >Various</a>                     XTK                <span id="price-of-xtoken"></span>   https://xtoken.market
+     Ruler Protocol      <a href="ruler/"             >Various</a>                     RULER              <span id="price-of-ruler-protocol"></span>   https://app.rulerprotocol.com/app/farms
+     Unslashed           <a href="usf/"               >Various</a>                     USF                <span id="price-of-unslashed-finance"></span>   https://app.unslashed.finance/
+     Inverse             <a href="inverse/"           >Various</a>                     INV                <span id="price-of-inverse-finance"></span>   https://inverse.finance/stake
 
 *** Disclaimer ***
 
@@ -58,6 +58,6 @@ I am in no way affiliated with the above projects, nor do I endorse them. Please
 | <a href="https://twitter.com/vfat12" target="_blank">Twitter</a> - <a href="https://github.com/vfat-tools/vfat-tools" target="_blank">Github</a> - <a href="https://gitcoin.co/grants/1809/vfattools-yield-farming-calculators" target="_blank">Gitcoin</a> |
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 </pre>
-<%- include(`${partials}/scripts`, {scriptname: 'homepage'}); -%>
-</body>
+    <%- include(`${partials}/scripts`, {scriptname: 'price-by-id'}); %>
+  </body>
 </html>
