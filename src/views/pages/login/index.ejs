@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <% if(filenameMap) { %>
+    <script src="<%= PP %>/js/<%= filenameMap['l.js'] %>"></script>
+    <% } else { %>
+    <script src="<%= PP %>/js/l.js"></script>
+    <% } %>
+  </head>
+  <body>
+    <label for="password"></label>
+    <input id="password" type="password" />
+    <button onclick="login()">Login</button>
+  </body>
+</html>
