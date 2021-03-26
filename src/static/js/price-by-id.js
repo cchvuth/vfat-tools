@@ -15,7 +15,7 @@ async function coinGecko() {
   let res = await (await fetch(requestStr)).json()
   matched.forEach(ele => {
     const price = res[ele.id.substr(preId.length)]?.usd
-    ele.innerHTML = (price ? '$ ' + price : '~').padEnd(20, ' ')
+    ele.innerHTML = (price ? '$ ' + formatMoney(price) : '~').padEnd(20, ' ')
   })
 }
 
@@ -46,7 +46,33 @@ async function coinMarketCap() {
 
     matched.forEach(ele => {
       const price = objBySlug[ele.id.substr(preId.length)]?.quote.USD.price
-      ele.innerHTML = (price ? '$ ' + price : '~').padEnd(20, ' ')
+      ele.innerHTML = (price ? '$ ' + formatMoney(price) : '~').padEnd(20, ' ')
     })
+  }
+}
+
+function formatMoney(amount, decimalCount = 2, decimal = '.', thousands = ',') {
+  try {
+    decimalCount = Math.abs(decimalCount)
+    decimalCount = isNaN(decimalCount) ? 2 : decimalCount
+
+    const negativeSign = amount < 0 ? '-' : ''
+
+    let i = parseInt((amount = Math.abs(Number(amount) || 0).toFixed(decimalCount))).toString()
+    let j = i.length > 3 ? i.length % 3 : 0
+
+    return (
+      negativeSign +
+      (j ? i.substr(0, j) + thousands : '') +
+      i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + thousands) +
+      (decimalCount
+        ? decimal +
+          Math.abs(amount - i)
+            .toFixed(decimalCount)
+            .slice(2)
+        : '')
+    )
+  } catch (e) {
+    console.log(e)
   }
 }

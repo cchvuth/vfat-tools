@@ -712,6 +712,7 @@ async function loadBscAUTOChefContract(
   )
 
   _print('Finished reading smart contracts.\n')
+  _print('<span><b>Total TVL: $<b><b id="total-tvl">0</b></span>\n')
 
   for (i = 0; i < poolCount; i++) {
     if (poolPrices[i]) {
