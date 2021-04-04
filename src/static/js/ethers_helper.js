@@ -1716,6 +1716,7 @@ async function loadChefContract(App, chef, chefAddress, chefAbi, rewardTokenTick
   const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
 
   _print("Finished reading smart contracts.\n");
+_print('<span><b>Total TVL: $<b><b id="total-tvl">0</b></span>\n')
 
   let aprs = []
   for (let i = 0; i < poolCount; i++) {

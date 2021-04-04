@@ -8,7 +8,7 @@ const ALPACA_CHEF_ABI = [{"inputs":[{"internalType":"contract AlpacaToken","name
 
 
 
-async function getAlpacaPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
+async function getAlpacaPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
   const poolInfo = await chefContract.poolInfo(poolIndex);
   const poolToken = await getBscToken(app, poolInfo.stakeToken, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
@@ -41,8 +41,8 @@ async function loadAlpacaBscChefContract(App, tokens, prices, chef, chefAddress,
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
   const rewardToken = await getBscToken(App, rewardTokenAddress, chefAddress);
-  const rewardsPerWeek = rewardsPerWeekFixed ?? 
-    await chefContract.callStatic[rewardsPerBlockFunction]() 
+  const rewardsPerWeek = rewardsPerWeekFixed ??
+    await chefContract.callStatic[rewardsPerBlockFunction]()
     / 10 ** rewardToken.decimals * 604800 / 3
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
@@ -56,14 +56,15 @@ async function loadAlpacaBscChefContract(App, tokens, prices, chef, chefAddress,
 
   if (deathPoolIndices) {   //load prices for the deathpool assets
     deathPoolIndices.map(i => poolInfos[i])
-                     .map(poolInfo => 
+                     .map(poolInfo =>
       poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "bsc") : undefined);
   }
   prices["0x6F695Bd5FFD25149176629f8491A5099426Ce7a7"] = getParameterCaseInsensitive(prices, "0x8F0528cE5eF7B51152A59745bEfDD91D97091d2F")
   const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "bsc") : undefined);
 
   _print("Finished reading smart contracts.\n");
-    
+_print('<span><b>Total TVL: $<b><b id="total-tvl">0</b></span>\n')
+
   let aprs = []
   for (i = 0; i < poolCount; i++) {
     if (poolPrices[i]) {
@@ -95,9 +96,9 @@ async function loadAlpacaBscChefContract(App, tokens, prices, chef, chefAddress,
   return { prices, totalUserStaked, totalStaked, averageApr }
 }
 
-async function main() {  
+async function main() {
     const App = await init_ethers();
-  
+
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
@@ -115,5 +116,5 @@ async function main() {
     await loadAlpacaBscChefContract(App, tokens, prices, ALPACA_CHEF, ALPACA_CHEF_ADDR, ALPACA_CHEF_ABI, rewardTokenTicker,
         "alpaca", null, rewardsPerWeek, "pendingAlpaca", [4]);
 
-    hideLoading(); 
+    hideLoading();
   }

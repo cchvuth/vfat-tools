@@ -20,7 +20,7 @@ async function main() {
 
     await loadBellaContract(App, BELLA_CONTRACT, BELLA_CONTRACT_ADDR, BELLA_CONTRACT_ABI, rewardTokenTicker,
         "bella", null, rewardsPerWeek, "earnedBellaAll");
-    
+
     hideLoading();
   }
 
@@ -40,16 +40,16 @@ async function main() {
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
   const rewardToken = await getToken(App, rewardTokenAddress, chefAddress);
-  const rewardsPerWeek = rewardsPerWeekFixed ?? 
-    await chefContract.callStatic[rewardsPerBlockFunction]() 
+  const rewardsPerWeek = rewardsPerWeekFixed ??
+    await chefContract.callStatic[rewardsPerBlockFunction]()
     / 10 ** rewardToken.decimals * 604800 / 13.5
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
     await getBellaPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
-  
+
   var tokenAddresses = [].concat.apply(["0xa91ac63d040deb1b7a5e4d4134ad23eb0ba07e14"], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
   var prices = await lookUpTokenPrices(tokenAddresses);
-  
+
   await Promise.all(tokenAddresses.map(async (address) => {
       tokens[address] = await getToken(App, address, chefAddress);
   }));
@@ -57,7 +57,8 @@ async function main() {
   const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
 
   _print("Finished reading smart contracts.\n");
-    
+_print('<span><b>Total TVL: $<b><b id="total-tvl">0</b></span>\n')
+
   for (i = 0; i < poolCount; i++) {
     if (poolPrices[i] && poolPrices[i].price) {
       printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
@@ -67,7 +68,7 @@ async function main() {
   }
 }
 
-async function getBellaPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
+async function getBellaPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
     const poolInfo = await chefContract.poolInfo(poolIndex);
     if (poolInfo.allocPoint == 0) {
       return {
@@ -87,7 +88,7 @@ async function getBellaPoolInfo(app, chefContract, chefAddress, poolIndex, pendi
     const staked = userInfo.amount / 10 ** poolToken.decimals;
     var stakedToken;
     var userLPStaked;
-    if (poolInfo.stakedHoldableToken != null && 
+    if (poolInfo.stakedHoldableToken != null &&
       poolInfo.stakedHoldableToken != "0x0000000000000000000000000000000000000000") {
       stakedToken = await getToken(app, poolInfo.stakedHoldableToken, chefAddress);
       userLPStaked = userInfo.stakedLPAmount / 10 ** poolToken.decimals

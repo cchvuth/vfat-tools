@@ -1,4 +1,4 @@
-const FantomTokens = [ 
+const FantomTokens = [
   { "id": "tether", "symbol": "USDT", "contract": "0x049d68029688eAbF473097a2fC38ef61633A3C7A"}
 ];
 
@@ -11,7 +11,7 @@ async function getFantomPrices() {
     return prices;
 }
 
-async function getFantomUniPool(App, pool, poolAddress, stakingAddress) {    
+async function getFantomUniPool(App, pool, poolAddress, stakingAddress) {
     let q0, q1;
     const reserves = await pool.getReserves();
     q0 = reserves._reserve0;
@@ -19,7 +19,7 @@ async function getFantomUniPool(App, pool, poolAddress, stakingAddress) {
     const decimals = await pool.decimals();
     const token0 = await pool.token0();
     const token1 = await pool.token1();
-    return { 
+    return {
         symbol : await pool.symbol(),
         name : await pool.name(),
         address: poolAddress,
@@ -68,7 +68,7 @@ async function geterc20(App, token, address, stakingAddress) {
 
 async function getFantomStoredToken(App, tokenAddress, stakingAddress, type) {
   switch (type) {
-    case "uniswap": 
+    case "uniswap":
       const pool = new ethers.Contract(tokenAddress, UNI_ABI, App.provider);
       return await getFantomUniPool(App, pool, tokenAddress, stakingAddress);
     case "bep20":
@@ -109,20 +109,20 @@ async function getFantomToken(App, tokenAddress, stakingAddress) {
 async function loadFantomSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
     rewardTokenFunction, stakeTokenFunction) {
       const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
-  
+
       if (!STAKING_POOL.callStatic[stakeTokenFunction]) {
         console.log("Couldn't find stake function ", stakeTokenFunction);
       }
       const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
-  
+
       const rewardTokenAddress = await STAKING_POOL.callStatic[rewardTokenFunction]();
-  
+
       var stakeToken = await getFantomToken(App, stakeTokenAddress, stakingAddress);
-  
+
       if (stakeTokenAddress.toLowerCase() === rewardTokenAddress.toLowerCase()) {
         stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
       }
-  
+
       var newPriceAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(prices, x));
       var newPrices = await lookUpTokenPrices(newPriceAddresses);
@@ -139,37 +139,37 @@ async function loadFantomSynthetixPoolInfo(App, tokens, prices, stakingAbi, stak
           tokens[rewardTokenAddress] = await getFantomToken(App, rewardTokenAddress, stakingAddress);
       }
       const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
-  
+
       const rewardTokenTicker = rewardToken.symbol;
-  
+
       const poolPrices = getPoolPrices(tokens, prices, stakeToken, "Fantom");
 
-      if (!poolPrices) 
+      if (!poolPrices)
       {
         console.log(`Couldn't calculate prices for pool ${stakeTokenAddress}`);
         return null;
       }
-  
+
       const stakeTokenTicker = poolPrices.stakeTokenTicker;
-  
+
       const stakeTokenPrice =
           prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
       const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
-  
+
       const periodFinish = await STAKING_POOL.periodFinish();
       const rewardRate = await STAKING_POOL.rewardRate();
       const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
-  
+
       const usdPerWeek = weeklyRewards * rewardTokenPrice;
-  
+
       const staked_tvl = poolPrices.staked_tvl;
-  
+
       const userStaked = await STAKING_POOL.balanceOf(App.YOUR_ADDRESS) / 10 ** stakeToken.decimals;
-  
+
       const userUnstaked = stakeToken.unstaked;
-  
+
       const earned = await STAKING_POOL.earned(App.YOUR_ADDRESS) / 10 ** rewardToken.decimals;
-  
+
       return  {
         stakingAddress,
         poolPrices,
@@ -203,18 +203,18 @@ async function loadFantomBasisFork(data) {
     var tokens = {};
     var prices = {};
     var totalStaked = 0;
-    
-    let p1 = await loadFantomSynthetixPool(App, tokens, prices, data.PoolABI, 
+
+    let p1 = await loadFantomSynthetixPool(App, tokens, prices, data.PoolABI,
         data.SharePool.address, data.SharePool.rewardToken, data.SharePool.stakeToken);
     totalStaked += p1.staked_tvl;
-    
+
     if (data.SharePool2) {
-      let p3 = await loadFantomSynthetixPool(App, tokens, prices, data.PoolABI, 
+      let p3 = await loadFantomSynthetixPool(App, tokens, prices, data.PoolABI,
           data.SharePool2.address, data.SharePool2.rewardToken, data.SharePool2.stakeToken);
       totalStaked += p3.staked_tvl;
     }
 
-    let p2 = await loadFantomSynthetixPool(App, tokens, prices, data.PoolABI, 
+    let p2 = await loadFantomSynthetixPool(App, tokens, prices, data.PoolABI,
         data.CashPool.address, data.CashPool.rewardToken, data.CashPool.stakeToken);
     totalStaked += p2.staked_tvl;
 
@@ -231,18 +231,18 @@ async function loadFantomBasisFork(data) {
       if (data.Boardrooms) {
         for (const boardroom of data.Boardrooms) {
           let br = await loadBoardroom(App, prices, boardroom.address, data.Oracle, data.UniswapLP, data.Cash,
-              data.ShareTicker, data.CashTicker, data.ExpansionsPerDay, data.MaximumExpansion, 
+              data.ShareTicker, data.CashTicker, data.ExpansionsPerDay, data.MaximumExpansion,
               data.Decimals, boardroom.ratio, data.TargetMantissa);
           totalStaked += br.staked_tvl;
         }
       }
       else {
         let br = await loadBoardroom(App, prices, data.Boardroom, data.Oracle, data.UniswapLP, data.Cash,
-            data.ShareTicker, data.CashTicker, data.ExpansionsPerDay, data.MaximumExpansion, 
+            data.ShareTicker, data.CashTicker, data.ExpansionsPerDay, data.MaximumExpansion,
             data.Decimals, 1, data.TargetMantissa);
         totalStaked += br.staked_tvl;
       }
-    } 
+    }
 
     _print_bold(`Total staked: $${formatMoney(totalStaked)}`)
 
@@ -250,7 +250,7 @@ async function loadFantomBasisFork(data) {
 }
 
 
-async function getFantomPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
+async function getFantomPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
   const poolInfo = await chefContract.poolInfo(poolIndex);
   if (poolInfo.allocPoint == 0) {
     return {
@@ -290,8 +290,8 @@ async function loadFantomChefContract(App, tokens, prices, chef, chefAddress, ch
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
   const rewardToken = await getFantomToken(App, rewardTokenAddress, chefAddress);
-  const rewardsPerWeek = rewardsPerWeekFixed ?? 
-    await chefContract.callStatic[rewardsPerBlockFunction]() 
+  const rewardsPerWeek = rewardsPerWeekFixed ??
+    await chefContract.callStatic[rewardsPerBlockFunction]()
     / 10 ** rewardToken.decimals * 604800 / 3
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
@@ -305,7 +305,7 @@ async function loadFantomChefContract(App, tokens, prices, chef, chefAddress, ch
 
   if (deathPoolIndices) {   //load prices for the deathpool assets
     deathPoolIndices.map(i => poolInfos[i])
-                     .map(poolInfo => 
+                     .map(poolInfo =>
       poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "Fantom") : undefined);
   }
 
@@ -313,7 +313,8 @@ async function loadFantomChefContract(App, tokens, prices, chef, chefAddress, ch
 
 
   _print("Finished reading smart contracts.\n");
-    
+_print('<span><b>Total TVL: $<b><b id="total-tvl">0</b></span>\n')
+
   for (i = 0; i < poolCount; i++) {
     if (poolPrices[i]) {
       printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
@@ -325,7 +326,7 @@ async function loadFantomChefContract(App, tokens, prices, chef, chefAddress, ch
 
 async function loadMultipleFantomSynthetixPools(App, tokens, prices, pools) {
   let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
-  const infos = await Promise.all(pools.map(p => 
+  const infos = await Promise.all(pools.map(p =>
       loadFantomSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction)));
   for (const i of infos) {
     let p = await printSynthetixPool(App, i, "Fantom");

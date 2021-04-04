@@ -1,4 +1,4 @@
-async function getMaticUniPool(App, pool, poolAddress, stakingAddress) {    
+async function getMaticUniPool(App, pool, poolAddress, stakingAddress) {
     let q0, q1;
     const reserves = await pool.getReserves();
     q0 = reserves._reserve0;
@@ -6,7 +6,7 @@ async function getMaticUniPool(App, pool, poolAddress, stakingAddress) {
     const decimals = await pool.decimals();
     const token0 = await pool.token0();
     const token1 = await pool.token1();
-    return { 
+    return {
         symbol : await pool.symbol(),
         name : await pool.name(),
         address: poolAddress,
@@ -55,7 +55,7 @@ async function getMatic20(App, token, address, stakingAddress) {
 
 async function getMaticStoredToken(App, tokenAddress, stakingAddress, type) {
   switch (type) {
-    case "uniswap": 
+    case "uniswap":
       const pool = new ethers.Contract(tokenAddress, UNI_ABI, App.provider);
       return await getMaticUniPool(App, pool, tokenAddress, stakingAddress);
     case "matic20":
@@ -95,20 +95,20 @@ async function getMaticToken(App, tokenAddress, stakingAddress) {
 async function loadMaticSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
     rewardTokenFunction, stakeTokenFunction) {
       const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
-  
+
       if (!STAKING_POOL.callStatic[stakeTokenFunction]) {
         console.log("Couldn't find stake function ", stakeTokenFunction);
       }
       const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
-  
+
       const rewardTokenAddress = await STAKING_POOL.callStatic[rewardTokenFunction]();
-  
+
       var stakeToken = await getMaticToken(App, stakeTokenAddress, stakingAddress);
-  
+
       if (stakeTokenAddress.toLowerCase() === rewardTokenAddress.toLowerCase()) {
         stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
       }
-  
+
       var newPriceAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(prices, x));
       var newPrices = await lookUpTokenPrices(newPriceAddresses);
@@ -125,37 +125,37 @@ async function loadMaticSynthetixPoolInfo(App, tokens, prices, stakingAbi, staki
           tokens[rewardTokenAddress] = await getMaticToken(App, rewardTokenAddress, stakingAddress);
       }
       const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
-  
+
       const rewardTokenTicker = rewardToken.symbol;
-  
+
       const poolPrices = getPoolPrices(tokens, prices, stakeToken, "matic");
 
-      if (!poolPrices) 
+      if (!poolPrices)
       {
         console.log(`Couldn't calculate prices for pool ${stakeTokenAddress}`);
         return null;
       }
-  
+
       const stakeTokenTicker = poolPrices.stakeTokenTicker;
-  
+
       const stakeTokenPrice =
           prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
       const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
-  
+
       const periodFinish = await STAKING_POOL.periodFinish();
       const rewardRate = await STAKING_POOL.rewardRate();
       const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
-  
+
       const usdPerWeek = weeklyRewards * rewardTokenPrice;
-  
+
       const staked_tvl = poolPrices.staked_tvl;
-  
+
       const userStaked = await STAKING_POOL.balanceOf(App.YOUR_ADDRESS) / 10 ** stakeToken.decimals;
-  
+
       const userUnstaked = stakeToken.unstaked;
-  
+
       const earned = await STAKING_POOL.earned(App.YOUR_ADDRESS) / 10 ** rewardToken.decimals;
-  
+
       return  {
         stakingAddress,
         poolPrices,
@@ -189,18 +189,18 @@ async function loadMaticBasisFork(data) {
     var tokens = {};
     var prices = {};
     var totalStaked = 0;
-    
-    let p1 = await loadMaticSynthetixPool(App, tokens, prices, data.PoolABI, 
+
+    let p1 = await loadMaticSynthetixPool(App, tokens, prices, data.PoolABI,
         data.SharePool.address, data.SharePool.rewardToken, data.SharePool.stakeToken);
     totalStaked += p1.staked_tvl;
-    
+
     if (data.SharePool2) {
-      let p3 = await loadMaticSynthetixPool(App, tokens, prices, data.PoolABI, 
+      let p3 = await loadMaticSynthetixPool(App, tokens, prices, data.PoolABI,
           data.SharePool2.address, data.SharePool2.rewardToken, data.SharePool2.stakeToken);
       totalStaked += p3.staked_tvl;
     }
 
-    let p2 = await loadMaticSynthetixPool(App, tokens, prices, data.PoolABI, 
+    let p2 = await loadMaticSynthetixPool(App, tokens, prices, data.PoolABI,
         data.CashPool.address, data.CashPool.rewardToken, data.CashPool.stakeToken);
     totalStaked += p2.staked_tvl;
 
@@ -217,18 +217,18 @@ async function loadMaticBasisFork(data) {
       if (data.Boardrooms) {
         for (const boardroom of data.Boardrooms) {
           let br = await loadBoardroom(App, prices, boardroom.address, data.Oracle, data.UniswapLP, data.Cash,
-              data.ShareTicker, data.CashTicker, data.ExpansionsPerDay, data.MaximumExpansion, 
+              data.ShareTicker, data.CashTicker, data.ExpansionsPerDay, data.MaximumExpansion,
               data.Decimals, boardroom.ratio, data.TargetMantissa);
           totalStaked += br.staked_tvl;
         }
       }
       else {
         let br = await loadBoardroom(App, prices, data.Boardroom, data.Oracle, data.UniswapLP, data.Cash,
-            data.ShareTicker, data.CashTicker, data.ExpansionsPerDay, data.MaximumExpansion, 
+            data.ShareTicker, data.CashTicker, data.ExpansionsPerDay, data.MaximumExpansion,
             data.Decimals, 1, data.TargetMantissa);
         totalStaked += br.staked_tvl;
       }
-    } 
+    }
 
     _print_bold(`Total staked: $${formatMoney(totalStaked)}`)
 
@@ -236,7 +236,7 @@ async function loadMaticBasisFork(data) {
 }
 
 
-async function getMaticPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
+async function getMaticPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
   const poolInfo = await chefContract.poolInfo(poolIndex);
   if (poolInfo.allocPoint == 0) {
     return {
@@ -276,8 +276,8 @@ async function loadMaticChefContract(App, tokens, prices, chef, chefAddress, che
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
   const rewardToken = await getMaticToken(App, rewardTokenAddress, chefAddress);
-  const rewardsPerWeek = rewardsPerWeekFixed ?? 
-    await chefContract.callStatic[rewardsPerBlockFunction]() 
+  const rewardsPerWeek = rewardsPerWeekFixed ??
+    await chefContract.callStatic[rewardsPerBlockFunction]()
     / 10 ** rewardToken.decimals * 604800 / 3
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
@@ -291,7 +291,7 @@ async function loadMaticChefContract(App, tokens, prices, chef, chefAddress, che
 
   if (deathPoolIndices) {   //load prices for the deathpool assets
     deathPoolIndices.map(i => poolInfos[i])
-                     .map(poolInfo => 
+                     .map(poolInfo =>
       poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "matic") : undefined);
   }
 
@@ -299,7 +299,8 @@ async function loadMaticChefContract(App, tokens, prices, chef, chefAddress, che
 
 
   _print("Finished reading smart contracts.\n");
-    
+_print('<span><b>Total TVL: $<b><b id="total-tvl">0</b></span>\n')
+
   for (i = 0; i < poolCount; i++) {
     if (poolPrices[i]) {
       printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
@@ -309,7 +310,7 @@ async function loadMaticChefContract(App, tokens, prices, chef, chefAddress, che
   }
 }
 
-const maticTokens = [ 
+const maticTokens = [
   { "id": "matic","symbol": "MATIC","contract": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270" },
   { "id": "tether","symbol": "USDT", "contract": "0xc2132D05D31c914a87C6611C10748AEb04B58e8F" },
   { "id": "bitcoin","symbol": "WBTC", "contract": "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6" },
@@ -317,7 +318,7 @@ const maticTokens = [
   { "id": "usd-coin","symbol": "USDC", "contract": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174" },
   { "id": "dai","symbol": "DAI", "contract": "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063" },
   { "id": "quick","symbol": "QUICK", "contract": "0x831753DD7087CaC61aB5644b308642cc1c33Dc13" },
-  { "id": "stake-dao", "symbol": "SDT", "contract": "0x361A5a4993493cE00f61C32d4EcCA5512b82CE90" },	
+  { "id": "stake-dao", "symbol": "SDT", "contract": "0x361A5a4993493cE00f61C32d4EcCA5512b82CE90" },
 ]
 
 async function getMaticPrices() {
@@ -331,7 +332,7 @@ async function getMaticPrices() {
 
 async function loadMultipleMaticSynthetixPools(App, tokens, prices, pools) {
   let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
-  const infos = await Promise.all(pools.map(p => 
+  const infos = await Promise.all(pools.map(p =>
       loadMaticSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction)));
   for (const i of infos) {
     let p = await printSynthetixPool(App, i, "matic");

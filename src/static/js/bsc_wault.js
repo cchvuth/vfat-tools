@@ -7,7 +7,7 @@ $(function() {
 const WAULT_ABI = [{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Claim","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"ClaimAndStake","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdraw","type":"event"},{"inputs":[{"internalType":"uint256","name":"pid","type":"uint256"}],"name":"claim","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"pid","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"pid","type":"uint256"},{"internalType":"address","name":"_user","type":"address"}],"name":"pendingRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"poolInfo","outputs":[{"internalType":"uint256","name":"allocPoint","type":"uint256"},{"internalType":"uint256","name":"lastRewardBlock","type":"uint256"},{"internalType":"uint256","name":"accWaultPerShare","type":"uint256"},{"internalType":"uint256","name":"depositedAmount","type":"uint256"},{"internalType":"uint256","name":"rewardsAmount","type":"uint256"},{"internalType":"uint256","name":"lockupDuration","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_waultPerBlock","type":"uint256"}],"name":"setWaultPerBlock","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"contract IERC20","name":"_wault","type":"address"}],"name":"setWaultToken","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"startBlock","type":"uint256"}],"name":"startStaking","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"totalAllocPoint","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"address","name":"","type":"address"}],"name":"userInfo","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"rewardDebt","type":"uint256"},{"internalType":"uint256","name":"pendingRewards","type":"uint256"},{"internalType":"uint256","name":"lastClaim","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"wault","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"waultPerBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"pid","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]
 const WAULT_LP_STAKE_ABI = [{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Claim","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdraw","type":"event"},{"inputs":[],"name":"claim","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"liquidityMining","outputs":[{"internalType":"contract IERC20","name":"lpToken","type":"address"},{"internalType":"uint256","name":"lastRewardBlock","type":"uint256"},{"internalType":"uint256","name":"accWaultPerShare","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_user","type":"address"}],"name":"pendingRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_waultPerBlock","type":"uint256"}],"name":"setWaultPerBlock","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"contract IERC20","name":"_wault","type":"address"},{"internalType":"contract IERC20","name":"_lpToken","type":"address"}],"name":"setWaultTokens","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"startBlock","type":"uint256"}],"name":"startMining","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"userInfo","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"rewardDebt","type":"uint256"},{"internalType":"uint256","name":"pendingRewards","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"wault","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"waultPerBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]
 
-async function main() {  
+async function main() {
   const App = await init_ethers();
 
   _print(`Initialized ${App.YOUR_ADDRESS}\n`);
@@ -42,7 +42,7 @@ async function main() {
   await loadBscWaultLpStakeContract(App, tokens, prices, WAULT_LP_STAKE_CONTRACT, WAULT_ADDR_LP_STAKE, WAULT_LP_STAKE_ABI, rewardTokenTicker,
       "wault", null, rewardsPerWeekLpStake, "pendingRewards");
 
-  hideLoading();  
+  hideLoading();
 }
 
 async function loadBscWaultContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,
@@ -63,8 +63,8 @@ async function loadBscWaultContract(App, tokens, prices, chef, chefAddress, chef
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
   const rewardToken = await getBscToken(App, rewardTokenAddress, chefAddress);
-  const rewardsPerWeek = rewardsPerWeekFixed ?? 
-    await chefContract.callStatic[rewardsPerBlockFunction]() 
+  const rewardsPerWeek = rewardsPerWeekFixed ??
+    await chefContract.callStatic[rewardsPerBlockFunction]()
     / 10 ** rewardToken.decimals * 604800 / 3
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
@@ -78,7 +78,7 @@ async function loadBscWaultContract(App, tokens, prices, chef, chefAddress, chef
 
   if (deathPoolIndices) {   //load prices for the deathpool assets
     deathPoolIndices.map(i => poolInfos[i])
-                     .map(poolInfo => 
+                     .map(poolInfo =>
       poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
   }
 
@@ -86,7 +86,8 @@ async function loadBscWaultContract(App, tokens, prices, chef, chefAddress, chef
 
 
   _print("Finished reading smart contracts.\n");
-    
+_print('<span><b>Total TVL: $<b><b id="total-tvl">0</b></span>\n')
+
   for (i = 0; i < poolCount; i++) {
     if (poolPrices[i]) {
       printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
@@ -96,7 +97,7 @@ async function loadBscWaultContract(App, tokens, prices, chef, chefAddress, chef
   }
 }
 
-async function getBscWaultPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
+async function getBscWaultPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
   const poolInfo = await chefContract.poolInfo(poolIndex);
   const lpToken = await chefContract.wault();
   if (poolInfo.allocPoint == 0) {
@@ -117,7 +118,7 @@ async function getBscWaultPoolInfo(app, chefContract, chefAddress, poolIndex, pe
   const staked = userInfo.amount / 10 ** poolToken.decimals;
   var stakedToken;
   var userLPStaked;
-  if (poolInfo.stakedHoldableToken != null && 
+  if (poolInfo.stakedHoldableToken != null &&
     poolInfo.stakedHoldableToken != "0x0000000000000000000000000000000000000000") {
     stakedToken = await getBscToken(app, poolInfo.stakedHoldableToken, chefAddress);
     userLPStaked = userInfo.stakedLPAmount / 10 ** poolToken.decimals
@@ -143,8 +144,8 @@ async function loadBscWaultLpStakeContract(App, tokens, prices, chef, chefAddres
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
   const rewardToken = await getBscToken(App, rewardTokenAddress, chefAddress);
-  const rewardsPerWeek = rewardsPerWeekFixed ?? 
-    await chefContract.callStatic[rewardsPerBlockFunction]() 
+  const rewardsPerWeek = rewardsPerWeekFixed ??
+    await chefContract.callStatic[rewardsPerBlockFunction]()
     / 10 ** rewardToken.decimals * 604800 / 3
 
   const waultPoolInfo = await getBscWaultLpStakePoolInfo(App, chefContract, chefAddress, pendingRewardsFunction);
@@ -157,7 +158,7 @@ async function loadBscWaultLpStakeContract(App, tokens, prices, chef, chefAddres
 
   if (deathPoolIndices) {   //load prices for the deathpool assets
     deathPoolIndices.map(i => poolInfos[i])
-                     .map(poolInfo => 
+                     .map(poolInfo =>
       poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
   }
 
@@ -169,12 +170,12 @@ async function loadBscWaultLpStakeContract(App, tokens, prices, chef, chefAddres
 function printWaultPool(prices, poolInfo, poolPrices, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress) {
   const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
   poolPrices.print_price();
-  printAPR(rewardTokenTicker, rewardPrice, rewardsPerWeek, poolPrices.stakeTokenTicker, 
+  printAPR(rewardTokenTicker, rewardPrice, rewardsPerWeek, poolPrices.stakeTokenTicker,
     poolPrices.staked_tvl, poolInfo.userStaked, poolPrices.price, 2);
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(poolInfo.userStaked);
 }
 
-async function getBscWaultLpStakePoolInfo(app, chefContract, chefAddress, pendingRewardsFunction) {  
+async function getBscWaultLpStakePoolInfo(app, chefContract, chefAddress, pendingRewardsFunction) {
   const poolInfo = await chefContract.liquidityMining();
   const poolToken = await getBscToken(app, poolInfo.lpToken, chefAddress);
   const userInfo = await chefContract.userInfo(app.YOUR_ADDRESS);

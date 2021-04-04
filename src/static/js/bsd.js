@@ -34,6 +34,7 @@ async function loadStablePools(App, chef, chefAddress, chefAbi, rewardTokenTicke
     const poolPrices = poolInfos.map(poolInfo => getPoolPrices(tokens, prices, poolInfo.poolToken));
 
     _print("Finished reading smart contracts.\n");
+_print('<span><b>Total TVL: $<b><b id="total-tvl">0</b></span>\n')
 
     const BSDS_DAI_BALANCER_POOL = "0xdD82e4227BaeC1Fc40a72ef9895f38f2C1Df4F42";
 
