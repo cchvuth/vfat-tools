@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include(`${partials}/head`); -%>
-<body>
-<pre class="container">
+  <%- include(`${partials}/head`); -%>
+  <body>
+    <pre class="container">
 <div>
 <a href="<%= PP %>/">Home</a> - <a href="<%= PP %>/all/">All</a> - <a href="<%= PP %>/bsc/">BSC</a> - <a href="<%= PP %>/heco/">HECO</a> - <a href="<%= PP %>/matic/">MATIC</a> - <a href="<%= PP %>/xdai/">xDAI</a> - <a href="<%= PP %>/avax/">AVAX</a> - <a href="<%= PP %>/fantom/">FANTOM</a> - <a href="<%= PP %>/harmony/">HARMONY</a> - <a href="<%= PP %>/seigniorage/">Seigniorage</a>
 </div>
@@ -12,9 +12,9 @@
 
 ************************ MATIC NETWORK *************************
 
----Pool Provider---     --------LP--------      --Reward Tokens--   --INFO--
-  Quickswap             <a href="quick"         >Various</a>                QUICK               https://quickswap.exchange/#/quick
-  Cometh                <a href="cometh"        >Various</a>                MUST                https://swap.cometh.io/#/stake
+---Pool Provider---     --------LP--------      --Reward Tokens--    --Price--              --INFO--
+  Quickswap             <a href="quick"         >Various</a>                QUICK                 <span id="price-of-quick"></span>   https://quickswap.exchange/#/quick
+  Cometh                <a href="cometh"        >Various</a>                MUST                  <span id="cmc-price-of-cometh"></span>   https://swap.cometh.io/#/stake
 
 *** Disclaimer ***
 
@@ -25,6 +25,6 @@ I am in no way affiliated with the above projects, nor do I endorse them. Please
 | <a href="https://twitter.com/vfat12" target="_blank">Twitter</a> - <a href="https://github.com/vfat-tools/vfat-tools" target="_blank">Github</a> - <a href="https://gitcoin.co/grants/1809/vfattools-yield-farming-calculators" target="_blank">Gitcoin</a> |
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 </pre>
-<%- include(`${partials}/scripts`, {scriptname: 'homepage'}); -%>
-</body>
+    <%- include(`${partials}/scripts`, {scriptname: 'price-by-id'}); %>
+  </body>
 </html>

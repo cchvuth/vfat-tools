@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include(`${partials}/head`); -%>
-<body>
-<pre class="container">
+  <%- include(`${partials}/head`); -%>
+  <body>
+    <pre class="container">
 <div>
 <a href="<%= PP %>/">Home</a> - <a href="<%= PP %>/all/">All</a> - <a href="<%= PP %>/bsc/">BSC</a> - <a href="<%= PP %>/heco/">HECO</a> - <a href="<%= PP %>/matic/">MATIC</a> - <a href="<%= PP %>/xdai/">xDAI</a> - <a href="<%= PP %>/avax/">AVAX</a> - <a href="<%= PP %>/fantom/">FANTOM</a> - <a href="<%= PP %>/harmony/">HARMONY</a> - <a href="<%= PP %>/seigniorage/">Seigniorage</a>
 </div>
@@ -12,10 +12,10 @@
 
 ************************ HUOBI ECO CHAIN *************************
 
----Pool Provider---     --------LP--------      --Reward Tokens--   --INFO--
-  Lavaswap              <a href="lava"          >Various</a>                LAVA                https://lavaswap.com/
-  Mdex                  <a href="mdex"          >Various</a>                MDX                 https://ht.mdex.com/
-  Complus               <a href="complus"       >Various</a>                COM                 https://heco.complus.exchange/
+---Pool Provider---     --------LP--------      --Reward Tokens--    --Price--              --INFO--
+  Lavaswap              <a href="lavaswap"      >Various</a>                LAVA                  <span id="cmc-price-of-lavaswap"></span>   https://lavaswap.com/
+  Mdex                  <a href="mdex"          >Various</a>                MDX                   <span id="price-of-mdex"></span>   https://mdex.com/
+  Complus               <a href="complus"       >Various</a>                COM                   <span id="price-of-xxx"></span>   https://heco.complus.exchange/
 
 *** Disclaimer ***
 
@@ -26,6 +26,6 @@ I am in no way affiliated with the above projects, nor do I endorse them. Please
 | <a href="https://twitter.com/vfat12" target="_blank">Twitter</a> - <a href="https://github.com/vfat-tools/vfat-tools" target="_blank">Github</a> - <a href="https://gitcoin.co/grants/1809/vfattools-yield-farming-calculators" target="_blank">Gitcoin</a> |
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 </pre>
-<%- include(`${partials}/scripts`, {scriptname: 'homepage'}); -%>
-</body>
+    <%- include(`${partials}/scripts`, {scriptname: 'price-by-id'}); %>
+  </body>
 </html>
